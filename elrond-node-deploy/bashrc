@@ -1,0 +1,3 @@
+alias node-monitoring="./elrond-utils/termui --address localhost:8080"
+alias node-start="./elrond-go-scripts-testnet/script.sh start"
+alias node-stop="./elrond-go-scripts-testnet/script.sh stop"
