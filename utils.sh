@@ -2,7 +2,7 @@
 
 source config.ini
 
-tar -cvjf elrond-node.tar.bz2 elrond-node-setup elrond-node-deploy
+tar -cvjf elrond-node.tar.bz2 elrond-node-setup elrond-node-deploy config.ini
 
 #scp (if [ -z VSP_port ] ; then ; else; -P $VSP_port fi;)elrond-node.tar.bz2 $VSP_user@$VSP_ip:/home/ubuntu/
 
