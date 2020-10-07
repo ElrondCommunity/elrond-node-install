@@ -17,7 +17,7 @@ echo -e "\e[32m---------------------------------  Change ssh port in sshd_config
 # change ssh port in sshd_config
 [ -f /etc/ssh/sshd_config.orig ] || cp /etc/ssh/{sshd_config,sshd_config.orig}
 cat /etc/ssh/sshd_config |
-sed "s/^#*[Pp]ort *[0-9]*$/Port $sshport/" >/etc/ssh/sshd_config.tmp
+sed "s/^#*[Pp]ort *[0-9]*$/Port $SSH_PORT/" >/etc/ssh/sshd_config.tmp
 mv /etc/ssh/{sshd_config.tmp,sshd_config}
 systemctl restart ssh
 
@@ -25,7 +25,7 @@ echo -e "\e[32m---------------------------------    Install Fail2Ban    --------
 apt-get -y install fail2ban
 echo "[sshd]
 enabled = true
-port = $sshport
+port = $SSH_PORT
 filter = sshd
 logpath = /var/log/auth.log
 maxretry = 4" >/etc/fail2ban/jail.local
@@ -36,8 +36,8 @@ systemctl start fail2ban &&  systemctl enable fail2ban
 echo -e "\e[32m---------------------------------    Configure Firewall UFW Rules    ---------------------------------\033[0m"
 
 yes | ufw reset
-yes | ufw limit $sshport
-yes | ufw allow $elrond_node_ports
+yes | ufw limit $SSH_PORT
+yes | ufw allow $NODE_PORT
 yes | ufw enable
 yes | ufw status
 yes | ufw delete 3
@@ -45,9 +45,10 @@ yes | ufw delete 3
 
 
 echo -e "\e[32m---------------------------------    Tune Network Conf    ---------------------------------\033[0m"
-cat network-tuning.conf > /etc/sysctl.d/99-network-tuning.conf
-chmod 644 /etc/sysctl.d/99-network-tuning.conf
-sysctl -f /etc/sysctl.d/99-network-tuning.conf
+#TODO: Verify the followting functionality.
+#cat network-tuning.conf > /etc/sysctl.d/99-network-tuning.conf
+#chmod 644 /etc/sysctl.d/99-network-tuning.conf
+#sysctl -f /etc/sysctl.d/99-network-tuning.conf
 
 
 

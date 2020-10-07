@@ -9,7 +9,7 @@ source ../config.ini
 #Update Environment
 source functions/environment.sh
 
-source functions/user.sh
+source functions/NODERUNNER.sh
 
 
 #if [ -n $netdatacloud_token ]; then

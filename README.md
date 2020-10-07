@@ -1,7 +1,15 @@
 
+#	Elrond Node - Auto Install System
+
+This module provide an automatic way for deploy an Elrond Node on a VPS.
 
 
-MANDATORY
+
+## Configuration
+
+The module configuration is centralized into the config.ini file.
+
+
 
 utils.sh
-	VSP_ip=""
+	VPS_IP=""
