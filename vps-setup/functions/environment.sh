@@ -17,7 +17,7 @@ echo -e "\e[32m---------------------------------  Change ssh port in sshd_config
 # change ssh port in sshd_config
 [ -f /etc/ssh/sshd_config.orig ] || cp /etc/ssh/{sshd_config,sshd_config.orig}
 cat /etc/ssh/sshd_config |
-sed "s/^#*[Pp]ort *[0-9]*$/Port $SSH_PORT/" >/etc/ssh/sshd_config.tmp
+sed "s/^#*[Pp]ort *[0-9]*$/Port $MY_SSH_PORT/" >/etc/ssh/sshd_config.tmp
 mv /etc/ssh/{sshd_config.tmp,sshd_config}
 systemctl restart ssh
 
@@ -25,7 +25,7 @@ echo -e "\e[32m---------------------------------    Install Fail2Ban    --------
 apt-get -y install fail2ban
 echo "[sshd]
 enabled = true
-port = $SSH_PORT
+port = $MY_SSH_PORT
 filter = sshd
 logpath = /var/log/auth.log
 maxretry = 4" >/etc/fail2ban/jail.local
@@ -36,7 +36,7 @@ systemctl start fail2ban &&  systemctl enable fail2ban
 echo -e "\e[32m---------------------------------    Configure Firewall UFW Rules    ---------------------------------\033[0m"
 
 yes | ufw reset
-yes | ufw limit $SSH_PORT
+yes | ufw limit $MY_SSH_PORT
 yes | ufw allow $NODE_PORT
 yes | ufw enable
 yes | ufw status

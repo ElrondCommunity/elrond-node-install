@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Loading configuration file
-source ../config.ini
+source ../variables.cfg
 
 #Check options & configuration
 
@@ -14,8 +14,8 @@ source functions/environment.sh
 source functions/user.sh
 
 
-if [ -n $netdatacloud_token ]; then
+#if [ -n $netdatacloud_token ]; then
  
-    source function/netdata.sh
-fi
+ #   source function/netdata.sh
+#fi
 

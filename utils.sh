@@ -1,26 +1,30 @@
 #!/bin/bash
 
 # Declare all the configuration variables
-source config.ini
+source variables.cfg
 
 #Create a tarball of the sources
-tar -cvjf elrond-node.tar.bz2 vps-setup elrond-node-deploy config.ini
+tar -cvjf elrond-node.tar.bz2 vps-setup elrond-node-deploy variables.cfg
 
 # Copy the tarball on the VPS
-scp elrond-node.tar.bz2 $VPS_NODERUNNER@$VPS_IP:/home/$VPS_NODERUNNER/
-
+echo -e "\e[32m---------------------------------    Please enter your generic user password   ---------------------------------\033[0m"
+scp elrond-node.tar.bz2 $VPS_USER@$VPS_IP:/home/$VPS_USER/
+rm elrond-node.tar.bz2
 # Untar it on the VPS
-ssh -t $VPS_NODERUNNER@$VPS_IP 'tar -xf /home/ubuntu/elrond-node.tar.bz2'
+echo -e "\e[32m---------------------------------    Please enter your generic user password   ---------------------------------\033[0m"
+ssh -t $VPS_USER@$VPS_IP 'tar -xf /home/ubuntu/elrond-node.tar.bz2'
 
 # Run the setup script for Configure the environment (Firewall, permission, Fail4Ban.....), save the output into a log file
-# TODO:In the next line, change ubuntu with $VPS_NODERUNNER
-ssh -t $VPS_NODERUNNER@$VPS_IP 'cd /home/ubuntu/vps-setup/ && sudo ./setup.sh 2>&1 | tee /home/ubuntu/vps-setup.log'
+# TODO:In the next line, change ubuntu with $VPS_USER
+echo -e "\e[32m---------------------------------    Please enter your generic user password   ---------------------------------\033[0m"
+ssh -t $VPS_USER@$VPS_IP 'cd /home/ubuntu/vps-setup/ && sudo ./install_vps.sh 2>&1 | tee /home/ubuntu/vps-setup.log'
 
 # Copy the Elrond Node installation script on the new user
-ssh -p $SSH_PORT -t $NODERUNNER@$VPS_IP "cp -R /home/$VPS_NODERUNNER/elrond-node-deploy /home/$NODERUNNER/"
+echo -e "\e[32m---------------------------------    Please enter your noderunner user password   ---------------------------------\033[0m"
+ssh -p $MY_SSH_PORT -t $NODERUNNER@$VPS_IP "cp -R /home/$VPS_USER/elrond-node-deploy /home/$NODERUNNER/"
 
-# Copy the config.ini on the new user home folder
-ssh -p $SSH_PORT -t $NODERUNNER@$VPS_IP "cp -R /home/$VPS_NODERUNNER/config.ini /home/$NODERUNNER/"
+# Copy the variables.cfg on the new user home folder
+ssh -p $MY_SSH_PORT -t $NODERUNNER@$VPS_IP "cp -R /home/$VPS_USER/variables.cfg /home/$NODERUNNER/"
 
 # Inject the content of the support bashrc into the noderunner user one
-ssh -p $SSH_PORT -t $NODERUNNER@$VPS_IP "cat /home/$NODERUNNER/elrond-node-deploy/bashrc >> /home/$NODERUNNER/.bashrc"
+ssh -p $MY_SSH_PORT -t $NODERUNNER@$VPS_IP "cat /home/$NODERUNNER/elrond-node-deploy/bashrc >> /home/$NODERUNNER/.bashrc"

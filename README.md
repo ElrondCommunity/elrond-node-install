@@ -7,7 +7,7 @@ This module provide an automatic way for deploy an Elrond Node on a VPS.
 
 ## Configuration
 
-The module configuration is centralized into the config.ini file.
+The module configuration is centralized into the variables.cfg file.
 
 
 
