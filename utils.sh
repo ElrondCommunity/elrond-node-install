@@ -10,6 +10,7 @@ tar -cvjf elrond-node.tar.bz2 vps-setup elrond-node-deploy variables.cfg
 echo -e "\e[32m---------------------------------    Please enter your generic user password   ---------------------------------\033[0m"
 scp elrond-node.tar.bz2 $VPS_USER@$VPS_IP:/home/$VPS_USER/
 rm elrond-node.tar.bz2
+
 # Untar it on the VPS
 echo -e "\e[32m---------------------------------    Please enter your generic user password   ---------------------------------\033[0m"
 ssh -t $VPS_USER@$VPS_IP 'tar -xf /home/ubuntu/elrond-node.tar.bz2'
