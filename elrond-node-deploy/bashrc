@@ -15,3 +15,6 @@ alias node-start="./elrond-go-scripts-testnet/script.sh start"
 alias node-stop="./elrond-go-scripts-testnet/script.sh stop"
 
 #------------------------------------------------------------
+
+
+alias ll="ls -lah"

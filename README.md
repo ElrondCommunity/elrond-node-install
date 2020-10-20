@@ -21,6 +21,27 @@ elrond-node-install/				- Main folder
 ├── utils.sh						- Main entry point from an external machine.
 └── README.md						- This file
 ```
-## Configuration
+## Walkthrough
+
+This chapter will explain step by step how to setup your node with the support of this system.
+
+### System Requirements
+
+You will need to have an operating system on which you will run this script.
+For the moment we support Linux (tested with Ubuntu 18.04) and probably Mac OS. 
+Windows support will come soon.
+
+We suppose that you took a VPS provider (OVH, AWS...) that respect the nodes host requirements : https://docs.elrond.com/validators/system-requirements
+
+
+### Prequisites
+
+At first, you must have a clean linux distribution installed (Ubuntu 18.04) on your VPS. You will then have the IP and the first user credentials, usually ubuntu.
+
+We consider that you cloned this repository on you local Linux and are ready to start to deploy your node.
+
+### Configuration
 
 The module configuration is centralized into the variables.cfg file.
+
+Here you must fill multiple variables that will be use for the entire VPS/Node deployment

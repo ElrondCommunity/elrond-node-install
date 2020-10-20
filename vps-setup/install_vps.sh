@@ -5,7 +5,7 @@ source ../variables.cfg
 
 #Check options & configuration
 
-source functions/options.sh
+# source functions/options.sh
 
 
 #Update Environment
@@ -16,6 +16,6 @@ source functions/user.sh
 
 #if [ -n $netdatacloud_token ]; then
  
- #   source function/netdata.sh
+ #  source functions/netdata.sh
 #fi
 
