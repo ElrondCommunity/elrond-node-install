@@ -1,10 +1,10 @@
 #!/bin/bash
 
 echo -e "\e[32m---------------------------------  Check variables.cfg file  ---------------------------------\033[0m"
-ip=1.2.3.4
 
-if [[ $ip =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-  echo "success"
+
+if [[ $VPS_IP =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+  echo "VPS_IP OK"
 else
   echo "fail"
 fi
