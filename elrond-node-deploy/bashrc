@@ -1,18 +1,16 @@
 #
-#   This .bashrc part is for the Elrond Nodes Commands 
+#   This .bashrc part is for the Elrond Nodes owner Commands 
 #
 
-# Source the variables into the environment.
+# Source the variables into the environment when bash start.
 source variables.cfg
 
-# ----------- Launch the Monitoring of the first Node
-
-alias node-monitoring="./elrond-utils/termui --address localhost:8080"
-#alias node-monitoring_1="$HOME/elrond-utils/termui --address localhost:8081"
+alias node-monitoring="$HOME/elrond-utils/termui --address localhost:8080"
+alias node-monitoring_1="$HOME/elrond-utils/termui --address localhost:8081"
 # ----------- Start & Stop the Node(s) present on the machine
 
-alias node-start="./elrond-go-scripts-testnet/script.sh start"
-alias node-stop="./elrond-go-scripts-testnet/script.sh stop"
+alias node-start="$HOME/elrond-go-scripts-$HOST_PURPOSE/script.sh start"
+alias node-stop="$HOME/elrond-go-scripts-$HOST_PURPOSE/script.sh stop"
 
 #------------------------------------------------------------
 
