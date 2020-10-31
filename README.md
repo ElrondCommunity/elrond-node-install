@@ -12,7 +12,6 @@ elrond-node-install/				- Main folder
 │   ├── functions						- Configuration modules for the different aspects.
 │   │   ├── environment.sh					- The environment itself
 │   │   ├── netdata.sh						- The NetData monitoring solution (http://netdata.cloud/)
-│   │   ├── option.sh						- Check of the required parameters from the variables.cfg
 │   │   └── user.sh							- Configuration of the noderunner user
 │   ├── install_vps.sh					- Main Script that configure the VPS from the generic VPS User
 │   └── resources						- Folder that contains additional ressources

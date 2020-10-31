@@ -2,9 +2,13 @@
 
 export DEBIAN_FRONTEND=noninteractive
 
-echo -e "\e[32m---------------------------------    Update Distribution    ---------------------------------\033[0m"
-# Run this script under root , just after 1rst OS Install and boot
-echo -e "\e[32m------------- Update, Upgrade, Dist-Upgrade -------------\033[0m"
+# Segment on ssh port dedicated to the Elrond network nodes
+# https://docs.elrond.com/validators/system-requirements
+NODE_PORT="37373:38383/tcp"
+
+
+
+echo -e "\e[32m------------- Update, Upgrade, Dist-Upgrade Distribution -------------\033[0m"
 apt-get -y update && apt-get -y upgrade && apt-get -y dist-upgrade
 
 echo -e "\e[32m---------------------------------  Change ssh port in sshd_config  ---------------------------------\033[0m"
@@ -26,10 +30,10 @@ port = $MY_SSH_PORT
 filter = sshd
 logpath = /var/log/auth.log
 maxretry = 4" >/etc/fail2ban/jail.local
-# Reduce permissions
+# Reduce permissions on the jail file
 chmod 644 /etc/fail2ban/jail.local
 
-# Start the Fail2Ban daemon and enable it on reboot:
+# Start the Fail2Ban daemon and enable it on reboot of the machine
 systemctl start fail2ban &&  systemctl enable fail2ban
 
 

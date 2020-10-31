@@ -1,10 +1,12 @@
 #!/bin/bash
 
+# This script will be launch from the NODERUNNER user for clone and configure the variable.cfg for install the node environment
+
+# We source our own variable.cfg
 source ../variables.cfg 
 
 # Set Variables automatically
-me=`whoami`
-MY_CUSTOM_HOME="/home/$me"
+MY_CUSTOM_HOME="/home/$NODERUNNER"
 
 sudo apt install git
 cd $MY_CUSTOM_HOME

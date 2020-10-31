@@ -3,11 +3,6 @@
 # Loading configuration file
 source ../variables.cfg
 
-#Check options & configuration
-
-# source functions/options.sh
-
-
 #Update Environment
 source functions/environment.sh
 
