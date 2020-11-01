@@ -1,94 +1,116 @@
 #!/bin/bash
 
 # This script will execute the entire procedure from an external linux machine.
-#           Configuration of the VPS (security, firewall, monitoring, noderunner user...)
-#           Cloning and execution of the official Elrond Network Node Deployment procedure
+#           - Configuration of the VPS (security, firewall, monitoring, noderunner user...)
+#           - Cloning and execution of the official Elrond Network Node Deployment procedure
 
 
 ## Main function of the script: Called at the end of this file
 main() {
 
-# Exit if fail
+# Exit the script if a function return an error
 set -e
 
 # Declare all the configuration variables
 source variables.cfg
 
+#We call the init function for check the configuration and 
 init
 
-echo -e "\e[32m---------------------------------    Remove the IP from the known hosts in case of precedent installation   ---------------------------------\033[0m"
+Log-Step "Remove the IP from the known hosts in case of precedent installation"
 ssh-keygen -f "$HOME/.ssh/known_hosts" -R "$VPS_IP"
 
-# Copy the tarball on the VPS
-echo -e "\e[32m---------------------------------    Please enter your VPS user password for copy the tarball on your $VPS_USER user home folder   ---------------------------------\033[0m"
+
+Log-Warning "Please enter your VPS user password for copy the tarball on your $VPS_USER user home folder with scp"
+
 scp elrond-node.tar.bz2 $VPS_USER@$VPS_IP:/home/$VPS_USER/
 rm elrond-node.tar.bz2
 
-# Untar it on the VPS
-#Run the setup script for Configure the environment (Firewall, permission, Fail4Ban.....), save the output into a log file
-echo -e "\e[32m---------------------------------    Please enter your VPS user password   ---------------------------------\033[0m"
+
+Log-Warning "Please enter your VPS user password for run the setup script remotely"
+Log-Warning "It will Configure the environment (Firewall, permission, Fail4Ban.....) by running install_vps.sh"
+
 ssh -t $VPS_USER@$VPS_IP 'tar -xf /home/ubuntu/elrond-node.tar.bz2 && cd /home/ubuntu/vps-setup/ && sudo ./install_vps.sh 2>&1 | tee /home/ubuntu/vps-setup.log'
 
 # Copy the Elrond Node installation script on the new user
-echo -e "\e[32m---------------------------------    Please enter your Noderunner user password   ---------------------------------\033[0m"
+Log-Warning "Please enter your Noderunner user password"
 ssh -p $MY_SSH_PORT -t $NODERUNNER@$VPS_IP "cp -R /home/$VPS_USER/elrond-node-deploy /home/$NODERUNNER/ && sudo chown -R $NODERUNNER:$NODERUNNER /home/$NODERUNNER/elrond-node-deploy/ && cp -R /home/$VPS_USER/variables.cfg /home/$NODERUNNER/ && cat /home/$NODERUNNER/elrond-node-deploy/bashrc >> /home/$NODERUNNER/.bashrc"
-
-#ssh -p $MY_SSH_PORT -t $NODERUNNER@$VPS_IP "source /home/$NODERUNNER/elrond-node-deploy/install_node.sh"
 
 }
 
 # We configure our current host and prepare the sources to be transfer to the VPS
 init() {
-    echo -e "\e[32m---------------------------------    Initialization of the environment   ---------------------------------\033[0m"
+    Log-Step "Preparation of the environment"
 
-    echo -e "\e[32m---------------------------------    Verification of the mandatory parameters from variables.cfg   ---------------------------------\033[0m"
+    Log-Step "Verification of the mandatory parameters from variables.cfg"
+
+    # We store if an error is identified and exit the script at the end in case.
     config_error=false
 
     if ! [[ $VPS_IP =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-        echo -e "\e[31m ERROR: You have no proper IP address for your VPS"
+        Log-Error "You have no proper IP address for your VPS"
         config_error="true"
     fi
 
     if [ -z "$VPS_USER" ]; then
-        echo -e "\e[31m ERROR: The VPS user field is empty"
+        Log-Error "The VPS_User variable is empty"
         config_error="true"
     fi
 
     if [ -z "$NODERUNNER" ]; then
-        echo -e "\e[31m ERROR: The NODERUNNER user field is empty"
+        Log-Error "The NODERUNNER user variable is empty"
         config_error="true"
     fi
 
     number_regular_expression='^[0-9]+$'
     if ! [[ $MY_SSH_PORT =~ $number_regular_expression ]] ; then
-        echo -e "\e[31m ERROR: The MY_SSH_PORT field is empty"
+        Log-Error "The MY_SSH_PORT variable is incorrect"
         config_error="true"
     else
         if [ "$MY_SSH_PORT" -gt "65535" ] || [ "$MY_SSH_PORT" -lt "49152" ]; then
-            echo -e "\e[31m ERROR: The MY_SSH_PORT field is incorrect, please select a value between 49152 & 65535"
+            Log-Error "The MY_SSH_PORT variable is incorrect, please select a value between 49152 & 65535"
             config_error="true"
         fi
     fi
-
-
     
     if [ -z "$netdatacloud_token" ]; then
-        echo -e "\e[33m WARNING: The NetData Configuration is empty -- This configuration step will be ignored"
+        Log-Warning "The NetData Configuration is empty -- This configuration step will be ignored"
     fi
 
     if [ "$HOST_PURPOSE" != "testnet" ] && [ "$HOST_PURPOSE" != "mainnet" ]; then
-        echo -e "\e[31m ERROR: The HOST_PURPOSE field is different from \"testnet\" or \"mainnet\" "
+        Log-Error "The HOST_PURPOSE variable is different from \"testnet\" or \"mainnet\" "
         config_error="true"
     fi
 
     if [ "$config_error" = "true" ]; then
-        echo -e "\e[31m --- Please, correct your informations into the variables.cfg "
+        echo -e "\e[31m ----------------------------------------------------------------"
+        echo -e "\e[31m --- Please, Correct your informations into the variables.cfg ---"
+        echo -e "\e[31m ----------------------------------------------------------------"
         exit 1
     fi
 
-    echo -e "\e[32m---------------------------------    Create a tarball of the sources for ssh transfer   ---------------------------------\033[0m"
-    tar -cvjf elrond-node.tar.bz2 vps-setup elrond-node-deploy variables.cfg
+    Log-Step "Create a tarball of the sources for ssh transfer"
+
+    tar -cvjf elrond-node.tar.bz2 vps-setup elrond-node-deploy variables.cfg config
 }
 
-# We call the main function
+
+
+# This function is use to print the different steps of the procedure.
+Log-Step() {
+    echo -e "\e[32m ###    $1   \033[0m"
+}
+
+# This function is use to print the different warnings of the procedure.
+Log-Warning() {
+    echo -e "\e[33m WARNING:  $1    \033[0m"
+}
+
+# This function is use to print the different errors of the procedure.
+Log-Error() {
+    echo -e "\e[31m ERROR:    $1    \033[0m"
+}
+
+
+# We call the main function after having declared all the functions
 main;
