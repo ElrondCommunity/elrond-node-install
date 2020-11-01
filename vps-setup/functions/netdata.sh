@@ -1,8 +1,10 @@
 #!/bin/bash
-echo -e "\e[32m---------------------------------  NETDATA Installation  ---------------------------------\033[0m"
-# Net data install
-bash <(curl -Ss https://my-netdata.io/kickstart.sh) --stable-channel
-# previous install start netdata. Just stop it before modify config
+
+echo -e "\e[32m---------------------------------  NetData Installation  ---------------------------------\033[0m"
+# Net data install with the official kickstarter script
+bash <(curl -Ss https://my-netdata.io/kickstart.sh ) --stable-channel --dont-wait
+
+
 # set netdata variables
 case "$HOST_PURPOSE" in
   testnet ) netdatacloud_warroom=$netdatacloud_warroom_testnet 
@@ -12,14 +14,6 @@ case "$HOST_PURPOSE" in
             elrond_url_api="https://api.elrond.com/validator/statistics"
 	    ;;
 esac
-# Extract my netdata config
-#tar --directory=/etc/netdata/ -xvf my_netdata_config.tar
-#cp sync.chart.sh /usr/libexec/netdata/charts.d/
-chmod +x sync.chart.sh
-# MODIFY HOSTNAME in netdata.conf
-#sed -i "s|^[ \t]*hostname[ \t]*=.*|\t  hostname = $HOSTNAME|" /etc/netdata/netdata.conf
-# MODIFY url monitoring API mainnet vs testnet in sync.charts.sh 
-sed -i "s|URL_ELROND_API|$elrond_url_api|" /usr/libexec/netdata/charts.d/sync.chart.sh
-# claim nodes to netdata.cloud
+
 sudo netdata-claim.sh -token=$netdatacloud_token -rooms=$netdatacloud_warroom -url=https://app.netdata.cloud
 systemctl start netdata

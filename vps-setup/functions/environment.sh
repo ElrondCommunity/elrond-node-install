@@ -4,7 +4,7 @@ export DEBIAN_FRONTEND=noninteractive
 
 # Segment on ssh port dedicated to the Elrond network nodes
 # https://docs.elrond.com/validators/system-requirements
-NODE_PORT="37373:38383/tcp"
+ELROND_NODE_PORTS="37373:38383/tcp"
 
 
 
@@ -41,7 +41,7 @@ echo -e "\e[32m---------------------------------    Configure Firewall UFW Rules
 
 yes | ufw reset
 yes | ufw limit $MY_SSH_PORT
-yes | ufw allow $NODE_PORT
+yes | ufw allow $ELROND_NODE_PORTS
 yes | ufw enable
 yes | ufw status
 yes | ufw delete 3

@@ -16,9 +16,9 @@ source functions/environment.sh
 source functions/user.sh
 
 
-#if [ -n $netdatacloud_token ]; then
- #  source functions/netdata.sh
-#fi
+if [ -n $netdatacloud_token ]; then
+  source functions/netdata.sh
+fi
 
 # At the end of the installation we delete the tarball and the config folder in the VPS_USER for security reasons
 rm -rf $HOME/elrond-node.tar.bz2
