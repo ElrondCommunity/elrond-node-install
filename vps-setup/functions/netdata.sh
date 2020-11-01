@@ -17,7 +17,7 @@ esac
 #cp sync.chart.sh /usr/libexec/netdata/charts.d/
 chmod +x sync.chart.sh
 # MODIFY HOSTNAME in netdata.conf
-sed -i "s|^[ \t]*hostname[ \t]*=.*|\t  hostname = $HOSTNAME|" /etc/netdata/netdata.conf
+#sed -i "s|^[ \t]*hostname[ \t]*=.*|\t  hostname = $HOSTNAME|" /etc/netdata/netdata.conf
 # MODIFY url monitoring API mainnet vs testnet in sync.charts.sh 
 sed -i "s|URL_ELROND_API|$elrond_url_api|" /usr/libexec/netdata/charts.d/sync.chart.sh
 # claim nodes to netdata.cloud

@@ -15,7 +15,6 @@ sudo apt install git
 cd
 git clone https://github.com/ElrondNetwork/elrond-go-scripts-$HOST_PURPOSE
 
-# MODIFY variable.cfg
 sed -i "s|^CUSTOM_HOME=\".*|CUSTOM_HOME=\""$HOME"\"|" $HOME/elrond-go-scripts-$HOST_PURPOSE/config/variables.cfg
 sed -i "s|^CUSTOM_USER=\".*|CUSTOM_USER=\""$NODERUNNER"\"|" $HOME/elrond-go-scripts-$HOST_PURPOSE/config/variables.cfg
 sed -i "s|^MY_SSH_PORT=\".*|MY_SSH_PORT=\""$MY_SSH_PORT"\"|" $HOME/elrond-go-scripts-$HOST_PURPOSE/config/variables.cfg
