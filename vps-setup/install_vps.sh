@@ -20,5 +20,5 @@ source functions/user.sh
  #  source functions/netdata.sh
 #fi
 
-# At the end of the installation we delete the tarball and the variables.cfg in the VPS_USER for security reasons
-rm $HOME/elrond-node.tar.bz2 $HOME/variables.cfg
+# At the end of the installation we delete the tarball and the config folder in the VPS_USER for security reasons
+rm -rf $HOME/elrond-node.tar.bz2

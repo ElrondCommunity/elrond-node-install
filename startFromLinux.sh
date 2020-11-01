@@ -12,37 +12,35 @@ main() {
 set -e
 
 # Declare all the configuration variables
-source variables.cfg
+source config/variables.cfg
 
-#We call the init function for check the configuration and 
-init
+#We call the Check_Config function for check the configuration 
+Check_Config
+
+Log-Step "Create a tarball of the sources for ssh transfer"
+tar -cvjf elrond-node.tar.bz2 vps-setup elrond-node-deploy config
 
 Log-Step "Remove the IP from the known hosts in case of precedent installation"
 ssh-keygen -f "$HOME/.ssh/known_hosts" -R "$VPS_IP"
 
 
-Log-Warning "Please enter your VPS user password for copy the tarball on your $VPS_USER user home folder with scp"
-
+Log-Step "Please enter your VPS user password for copy the tarball on your $VPS_USER user home folder with scp"
 scp elrond-node.tar.bz2 $VPS_USER@$VPS_IP:/home/$VPS_USER/
-rm elrond-node.tar.bz2
+rm -rf elrond-node.tar.bz2
 
-
-Log-Warning "Please enter your VPS user password for run the setup script remotely"
-Log-Warning "It will Configure the environment (Firewall, permission, Fail4Ban.....) by running install_vps.sh"
+Log-Step "Please enter your VPS user password for run the setup script remotely"
+Log-Step "It will Configure the environment (Firewall, permission, Fail4Ban.....) by running install_vps.sh"
 
 ssh -t $VPS_USER@$VPS_IP 'tar -xf /home/ubuntu/elrond-node.tar.bz2 && cd /home/ubuntu/vps-setup/ && sudo ./install_vps.sh 2>&1 | tee /home/ubuntu/vps-setup.log'
 
 # Copy the Elrond Node installation script on the new user
-Log-Warning "Please enter your Noderunner user password"
-ssh -p $MY_SSH_PORT -t $NODERUNNER@$VPS_IP "cp -R /home/$VPS_USER/elrond-node-deploy /home/$NODERUNNER/ && sudo chown -R $NODERUNNER:$NODERUNNER /home/$NODERUNNER/elrond-node-deploy/ && cp -R /home/$VPS_USER/variables.cfg /home/$NODERUNNER/ && cat /home/$NODERUNNER/elrond-node-deploy/bashrc >> /home/$NODERUNNER/.bashrc"
-
+Log-Step "Please enter your Noderunner user password for copy all Node related elements into"
+ssh -p $MY_SSH_PORT -t $NODERUNNER@$VPS_IP "sudo mv /home/$VPS_USER/elrond-node-deploy /home/$VPS_USER/config /home/$NODERUNNER/ && sudo chown -R $NODERUNNER:$NODERUNNER /home/$NODERUNNER/"
 }
 
-# We configure our current host and prepare the sources to be transfer to the VPS
-init() {
-    Log-Step "Preparation of the environment"
-
-    Log-Step "Verification of the mandatory parameters from variables.cfg"
+# We check the configuration in the variables.cfg file
+Check_Config() {
+    Log-Step "Verification of the configuration from variables.cfg"
 
     # We store if an error is identified and exit the script at the end in case.
     config_error=false
@@ -88,10 +86,6 @@ init() {
         echo -e "\e[31m ----------------------------------------------------------------"
         exit 1
     fi
-
-    Log-Step "Create a tarball of the sources for ssh transfer"
-
-    tar -cvjf elrond-node.tar.bz2 vps-setup elrond-node-deploy variables.cfg config
 }
 
 
