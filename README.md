@@ -15,7 +15,7 @@ elrond-node-install                 - Main folder of the repository
 │   ├── VALIDATOR_KEYS              - Folder that should contain zip files with the validator keys.
 │   │   └── node-0.zip              - Dummy validator key that must be replace with the user one.
 │   └── variables.cfg               - Main Variables file: It contains the VPS and the security details.
-├── elrond-node-deploy              - Folder that will be copy in the home folder of the NODERUNNER user.
+├── node-deploy                     - Folder that will be copy in the home folder of the NODERUNNER user.
 │   └── install_node.sh             - Download and configure the elrond-go-scripts-[testnet, mainnet] : TO RUN AFTER MANUALLY
 ├── LICENCE                         - MTI Licence file
 ├── README.md                       - This file

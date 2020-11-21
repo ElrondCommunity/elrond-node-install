@@ -18,7 +18,7 @@ source config/variables.cfg
 Check_Config
 
 Log-Step "Create a tarball of the sources for ssh transfer"
-tar -cvjf elrond-node.tar.bz2 vps-setup elrond-node-deploy config
+tar -cvjf elrond-node.tar.bz2 vps-setup node-deploy config
 
 Log-Step "Remove the IP from the known hosts in case of precedent installation"
 ssh-keygen -f "$HOME/.ssh/known_hosts" -R "$VPS_IP"
@@ -35,7 +35,7 @@ ssh -t $VPS_USER@$VPS_IP 'tar -xf /home/ubuntu/elrond-node.tar.bz2 && cd /home/u
 
 # Copy the Elrond Node installation script on the new user
 Log-Step "Please enter your Noderunner user password for copy all Node related elements into"
-ssh -p $MY_SSH_PORT -t $NODERUNNER@$VPS_IP "sudo mv /home/$VPS_USER/elrond-node-deploy /home/$VPS_USER/config /home/$NODERUNNER/ && sudo chown -R $NODERUNNER:$NODERUNNER /home/$NODERUNNER/"
+ssh -p $MY_SSH_PORT -t $NODERUNNER@$VPS_IP "sudo mv /home/$VPS_USER/node-deploy /home/$VPS_USER/config /home/$NODERUNNER/ && sudo chown -R $NODERUNNER:$NODERUNNER /home/$NODERUNNER/"
 }
 
 # We check the configuration in the variables.cfg file
