@@ -9,8 +9,10 @@ source $HOME/config/variables.cfg
 #                 Elrond Nodes Specific Commands
 #------------------------------------------------------------
 
-alias monitoring="$HOME/elrond-utils/termui --address localhost:8080"
+alias monitoring-0="$HOME/elrond-utils/termui --address localhost:8080"
 alias monitoring-1="$HOME/elrond-utils/termui --address localhost:8081"
+alias monitoring-2="$HOME/elrond-utils/termui --address localhost:8082"
+alias monitoring-3="$HOME/elrond-utils/termui --address localhost:8083"
 
 # ----------- Start & Stop the Node(s) present on the machine
 
@@ -21,3 +23,4 @@ alias stop-node="$HOME/elrond-go-scripts-$HOST_PURPOSE/script.sh stop"
 #                   Generic User Configuration
 #------------------------------------------------------------
 alias ll="ls -lah"
+alias ..="cd .."

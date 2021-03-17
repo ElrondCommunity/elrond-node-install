@@ -14,8 +14,8 @@ apt-get -y update && apt-get -y upgrade && apt-get -y dist-upgrade
 echo -e "\e[32m---------------------------------  Change ssh port in sshd_config  ---------------------------------\033[0m"
 # Change ssh port in sshd_config
 [ -f /etc/ssh/sshd_config.orig ] || cp /etc/ssh/{sshd_config,sshd_config.orig}
-cat /etc/ssh/sshd_config |
-sed "s/^#*[Pp]ort *[0-9]*$/Port $MY_SSH_PORT/" >/etc/ssh/sshd_config.tmp
+cat /etc/ssh/sshd_config | sed "s/^#*[Pp]ort *[0-9]*$/Port $MY_SSH_PORT/" >/etc/ssh/sshd_config.tmp
+sed -i "/PermitRootLogin/c\PermitRootLogin no" /etc/ssh/sshd_config.tmp
 mv /etc/ssh/{sshd_config.tmp,sshd_config}
 systemctl restart ssh
 

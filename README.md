@@ -13,17 +13,18 @@ elrond-node-install                 - Main folder of the repository
 ├── config                          - Folder that contains elements that can/must be modify by the user.
 │   ├── bashrc                      - Content that will be add to the end of the NODERUNNER user .bashrc.
 │   ├── VALIDATOR_KEYS              - Folder that should contain zip files with the validator keys.
-│   │   └── node-0.zip              - Dummy validator key that must be replace with the user one.
+│   │   └── node-0.zip              - Dummy validator key that must be replace with yours.
 │   └── variables.cfg               - Main Variables file: It contains the VPS and the security details.
 ├── node-deploy                     - Folder that will be copy in the home folder of the NODERUNNER user.
 │   └── install_node.sh             - Download and configure the elrond-go-scripts-[testnet, mainnet] : TO RUN AFTER MANUALLY
-├── LICENCE                         - MTI Licence file
+├── LICENCE                         - MIT Licence file
 ├── README.md                       - This file
-├── startFromLinux.sh               - START the procedure from a remote linux
-└── vps-setup                       - Folder that will be copy in the VPS_USER home folder for configure and secure the machine
-    ├── functions                   - Regroups scripts that categorize the different phases
-    │   ├── environment.sh          - Configuration of the environment (Firewall, third party, dependencies)
-    │   ├── netdata.sh              - Script for install netdata automatically
+├── startFromLinux.sh               - START the procedure from a remote linux machine.
+└── vps-setup                       - Folder that will be copy in the VPS_USER home folder for configure and secure the VPS.
+    ├── functions                   - Sub scripts
+    │   ├── environment.sh          - Configuration of the environment (Security, third party, dependencies)
+    |   |── netdata-claim           - function for claim the netdata node (TODO: Remove from here and fetch the latest version)
+    │   ├── netdata.sh              - Script for install netdata from https://github.com/disruptivedigital/dd-netdata-install-erdapi.git 
     │   ├── user.sh                 - Create and configure the NODERUNNER user that will host the Elrond node
     │   └── utils.sh                - Additional functions
     ├── install_vps.sh              - Main entry point for configure the VPS
@@ -50,13 +51,13 @@ We suppose that you already took a VPS provider (OVH, AWS...) that respect the n
 ### Prequisites
 
 
-At first, you must have a clean linux distribution installed (Ubuntu 18.04 or 20.04) on your VPS. You will then receive the IP and the first user credentials, usually ubuntu.
+At first, you must have a clean linux distribution installed (Ubuntu 18.04 or 20.04) on your VPS.
 
-We consider that you cloned this repository on you local Linux and are ready to start to deploy your node.
+You will receive the IP and the first main user password, usually ubuntu. You can also run this script with an SSH key directly locally.
 
 ### Configuration
 
-The module configuration is centralized around the config folder:
+The module configuration is centralized around the "config" folder:
 
 #### variables.cfg
 
@@ -73,8 +74,6 @@ netdatacloud_warroom_testnet | [] | Token of your room dedicated to monitor test
 netdatacloud_warroom_mainnet | [] | Token of your room dedicated to monitor mainnet nodes
 HOST_PURPOSE | [x] | The purpose of the nodes that will run (testnet or mainnet)
 MY_IDENTITY | [x] | The nickname of the node owner
-
-
 
 #### VALIDATOR_KEYS
 

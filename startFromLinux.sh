@@ -25,7 +25,7 @@ ssh-keygen -f "$HOME/.ssh/known_hosts" -R "$VPS_IP"
 
 
 Log-Step "Please enter your VPS user password for copy the tarball on your $VPS_USER user home folder with scp"
-scp elrond-node.tar.bz2 $VPS_USER@$VPS_IP:/home/$VPS_USER/
+scp -i ~/.ssh/id_rsa.pub elrond-node.tar.bz2 $VPS_USER@$VPS_IP:/home/$VPS_USER/
 rm -rf elrond-node.tar.bz2
 
 Log-Step "Please enter your VPS user password for run the setup script remotely"
